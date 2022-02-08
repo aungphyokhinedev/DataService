@@ -1,19 +1,20 @@
 
 using Dapper;
 using Npgsql;
+using AplusExtension;
 using AplusDbContext;
 
 public class PostgresDataContext : IDataContext
 {
-    IDbConnection _dbconfig;
+    IConfiguration _config;
     
-    public PostgresDataContext(IDbConnection cofig){
-        _dbconfig = cofig;
+    public PostgresDataContext(IConfiguration cofig){
+        _config = cofig;
     }
 
     public async Task<ListResponse> GetListAsync(GetRequest request)
     {
-        using (var connection = new NpgsqlConnection(_dbconfig.connection))
+        using (var connection = new NpgsqlConnection(_config["DbConnection"]))
         {
             try
             {
@@ -85,7 +86,7 @@ public class PostgresDataContext : IDataContext
 
     public async Task<Response> AddAsync(CreateRequest request)
     {
-        using (var connection = new NpgsqlConnection(_dbconfig.connection))
+        using (var connection = new NpgsqlConnection(_config["DbConnection"]))
         {
             try
             {
@@ -121,7 +122,7 @@ public class PostgresDataContext : IDataContext
 
     public async Task<Response> UpdateAsync(UpdateRequest request)
     {
-        using (var connection = new NpgsqlConnection(_dbconfig.connection))
+        using (var connection = new NpgsqlConnection(_config["DbConnection"]))
         {
             try
             {
@@ -159,7 +160,7 @@ public class PostgresDataContext : IDataContext
 
     public async Task<Response> RemoveAsync(RemoveRequest request)
     {
-        using (var connection = new NpgsqlConnection(_dbconfig.connection))
+        using (var connection = new NpgsqlConnection(_config["DbConnection"]))
         {
             try
             {

@@ -1,6 +1,6 @@
 
 using System.Reflection;
-namespace AplusDbContext;
+namespace AplusExtension;
 public static partial class Extensions
 {
     /// <summary>
@@ -55,7 +55,7 @@ public static partial class Extensions
             }).ToList();
     }
 
-     public static Dictionary<string, object> toDictionaryList(this List<Parameter> list)
+     public static Dictionary<string?, object?> toDictionaryList(this List<Parameter> list)
     {
         return list.ToDictionary(x=>x.key,x=>{
                     

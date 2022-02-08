@@ -1,7 +1,7 @@
 namespace AplusDbContext;
 public class CreateRequest {
 
-   public string table {get;set;}
-   public List<Parameter> data{get;set;} 
+   public string? table {get;set;}
+   public List<Parameter>? data{get;set;} 
 
 }
