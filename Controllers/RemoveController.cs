@@ -1,26 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using AplusExtension;
-using AplusDbContext;
 using MassTransit;
 namespace DataService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class RemoveController : ControllerBase
 {
-    IRequestClient<AddData> _client;
+    IRequestClient<RemoveData> _client;
 
     private readonly ILogger<RemoveController> _logger;
     private IDataContext _db;
-    public RemoveController(ILogger<RemoveController> logger, IDataContext db,IRequestClient<AddData> client)
+    public RemoveController(ILogger<RemoveController> logger, IDataContext db,IRequestClient<RemoveData> client)
     {
         _client = client;
         _logger = logger;
         _db = db;
     }
 
-        //http://localhost:5033/AddContext
-        public async Task<AplusDbContext.Response> Update()
+      [HttpPost]
+        public async Task<DataService.Response> Remove()
         {
            
             

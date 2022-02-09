@@ -1,4 +1,4 @@
-namespace AplusDbContext;
+namespace DataService;
 public class GetRequest
 {
    public int page {get;set;} = 1;

@@ -1,5 +1,4 @@
 using MassTransit;
-using DataService.Consumers;
 using DataService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +14,7 @@ builder.Services.AddScoped<IDataContext, PostgresDataContext>();
 builder.Services.AddMassTransit(x =>
             {
                 //x.AddConsumers(Assembly.GetExecutingAssembly());
-                x.AddConsumer<GetWeatherForecastConsumer>();
+               
                 x.AddConsumer<AddDataConsumer>();
                 x.AddConsumer<UpdateDataConsumer>();
                 x.AddConsumer<RemoveDataConsumer>();
@@ -32,7 +31,7 @@ builder.Services.AddMassTransit(x =>
                 });
 
 
-                x.AddRequestClient<GetWeatherForecasts>();
+               
                 x.AddRequestClient<AddData>();
                 x.AddRequestClient<UpdateData>();
                 x.AddRequestClient<RemoveData>();

@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using AplusExtension;
-using AplusDbContext;
 using MassTransit;
 namespace DataService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class AddController : ControllerBase
 {
     IRequestClient<AddData> _client;
@@ -16,11 +15,11 @@ public class AddController : ControllerBase
     {
         _client = client;
         _logger = logger;
-        _db = db;
+        _db = db; //http://localhost:5033/AddContext
     }
 
-        //http://localhost:5033/AddContext
-        public async Task<AplusDbContext.Response> Add()
+       [HttpPost]
+        public async Task<DataService.Response> Add()
         {
          
             var data = new Dictionary<string, object>{

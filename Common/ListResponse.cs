@@ -1,4 +1,4 @@
-namespace AplusDbContext;
+namespace DataService;
 public class ListResponse : IResponse{
 
     public int page {get;set;}

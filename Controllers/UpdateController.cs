@@ -1,26 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
-using AplusDbContext;
 using AplusExtension;
 using MassTransit;
 namespace DataService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class UpdateController : ControllerBase
 {
-    IRequestClient<AddData> _client;
+    IRequestClient<UpdateData> _client;
 
     private readonly ILogger<UpdateController> _logger;
     private IDataContext _db;
-    public UpdateController(ILogger<UpdateController> logger, IDataContext db,IRequestClient<AddData> client)
+    public UpdateController(ILogger<UpdateController> logger, IDataContext db,IRequestClient<UpdateData> client)
     {
         _client = client;
         _logger = logger;
         _db = db;
     }
 
-        //http://localhost:5033/AddContext
-        public async Task<AplusDbContext.Response> Update()
+       [HttpPost]
+        public async Task<DataService.Response> Update()
         {
            
             

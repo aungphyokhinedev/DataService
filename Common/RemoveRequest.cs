@@ -1,4 +1,4 @@
-namespace AplusDbContext;
+namespace DataService;
 public class RemoveRequest {
 
    public string? table {get;set;}

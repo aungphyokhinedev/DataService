@@ -1,4 +1,3 @@
-namespace AplusDbContext;
 public class IResponse {
  
    public  ResultCode code{get;set;}

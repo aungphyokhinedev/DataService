@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using AplusDbContext;
+
 using MassTransit;
 namespace DataService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class ListController : ControllerBase
 {
     IRequestClient<GetList> _client;
@@ -18,7 +18,7 @@ public class ListController : ControllerBase
         _db = db;
     }
 
-    //http://localhost:5033/ListContext?PageSize=15&page=1
+   [HttpPost]
         public async Task<object> GetList(int page, int pageSize)
         {
             var request = new GetRequest{

@@ -1,4 +1,4 @@
-namespace AplusDbContext;
+namespace DataService;
 public class UpdateRequest {
 
    public string? table {get;set;}

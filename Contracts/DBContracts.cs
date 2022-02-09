@@ -1,14 +1,7 @@
 
 namespace DataService;
-using AplusDbContext;
-public interface GetWeatherForecasts
-{
-}
 
-public interface WeatherForecasts
-{
-    WeatherForecast[] Forecasts {  get; }
-}
+
 
 public interface GetList{
     GetRequest request {get;}
