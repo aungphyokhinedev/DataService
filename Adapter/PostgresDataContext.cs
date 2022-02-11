@@ -65,7 +65,7 @@ public class PostgresDataContext : IDataContext
 
                 return new ListResponse
                 {
-                    code = ResultCode.Success,
+                    code = ResultCode.OK,
                     total = total,
                     page = request.page,
                     pageSize = request.pageSize,
@@ -76,7 +76,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new ListResponse
                 {
-                    code = ResultCode.Fail,
+                    code = ResultCode.InternalServerError,
                     message = e.Message
                 };
             }
@@ -103,7 +103,7 @@ public class PostgresDataContext : IDataContext
                 
                 return new Response
                 {
-                    code = ResultCode.Success,
+                    code = ResultCode.OK,
                     message = "ok",
                     rows = created.Select(x => x as IDictionary<string,object>).ToList()
                 };
@@ -112,7 +112,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.Fail,
+                    code = ResultCode.InternalServerError,
                     message = e.Message
                 };
             }
@@ -141,7 +141,7 @@ public class PostgresDataContext : IDataContext
                 
                 return new Response
                 {
-                    code = ResultCode.Success,
+                    code = ResultCode.OK,
                     message = "ok",
                     rows = updated.Select(x => x as IDictionary<string,object>).ToList()
                 };
@@ -150,7 +150,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.Fail,
+                    code = ResultCode.InternalServerError,
                     message = e.Message
                 };
             }
@@ -174,7 +174,7 @@ public class PostgresDataContext : IDataContext
                 
                 return new Response
                 {
-                    code = ResultCode.Success,
+                    code = ResultCode.OK,
                     message = "ok",
                     rows = deleted.Select(x => x as IDictionary<string,object>).ToList()
                 };
@@ -183,7 +183,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.Fail,
+                    code = ResultCode.InternalServerError,
                     message = e.Message
                 };
             }
