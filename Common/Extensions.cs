@@ -1,5 +1,9 @@
 
+using System.ComponentModel;
 using System.Reflection;
+using DataService;
+using Newtonsoft.Json;
+
 namespace AplusExtension;
 public static partial class Extensions
 {
@@ -55,8 +59,48 @@ public static partial class Extensions
             }).ToList();
     }
 
+    public static List<QueryRequest> toQueryRequest(this List<QueryContext> requests)
+    {
+
+        return requests.Select(x=>new QueryRequest{
+                request = JsonConvert.SerializeObject(x),
+                type = x.GetType()
+            }).ToList();
+    }
+
+    public static IDictionary<string, T> ToDictionary<T>(this object source)
+    {
+        if (source == null)
+           ThrowExceptionWhenSourceArgumentIsNull();
+
+        var dictionary = new Dictionary<string, T>();
+        foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
+            AddPropertyToDictionary<T>(property, source, dictionary);
+        return dictionary;
+    }
+
+    private static void AddPropertyToDictionary<T>(PropertyDescriptor property, object source, Dictionary<string, T> dictionary)
+    {
+        object value = property.GetValue(source);
+        if (IsOfType<T>(value))
+            dictionary.Add(property.Name, (T)value);
+    }
+
+    private static bool IsOfType<T>(object value)
+    {
+        return value is T;
+    }
+
+    private static void ThrowExceptionWhenSourceArgumentIsNull()
+    {
+        throw new ArgumentNullException("source", "Unable to convert object to a dictionary. The source object is null.");
+    }
+
+
      public static Dictionary<string?, object?> toDictionaryList(this List<Parameter> list)
     {
+        if(list == null) return null;
+
         return list.ToDictionary(x=>x.key,x=>{
                     
                     ///this is for message queue serialization on date data problem

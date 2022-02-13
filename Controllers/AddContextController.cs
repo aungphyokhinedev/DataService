@@ -48,7 +48,7 @@ public class AddController : ControllerBase
 
            
            
-            return   result.Message.response;
+            return   (Response)result.Message.response;
         
         }
 

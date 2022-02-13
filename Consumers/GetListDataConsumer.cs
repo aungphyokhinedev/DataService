@@ -1,4 +1,5 @@
 using MassTransit;
+using AplusExtension;
 namespace DataService;
 
 public class GetListDataConsumer : IConsumer<GetList> 
@@ -11,13 +12,16 @@ public class GetListDataConsumer : IConsumer<GetList>
 
     public async Task Consume(ConsumeContext<GetList> context)
     {   
-        
-        var result = await _db.GetListAsync(context.Message.request);
+      
+        var result = await _db.GetListAsync(RequestTransformer.toSelect(context.Message.request));
        
         await context.RespondAsync<ListData>(new
         {
             response = result
         });
     }
+
+   
 }
+
 

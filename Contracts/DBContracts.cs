@@ -27,6 +27,11 @@ public interface RemoveData{
     
 }
 
+public interface TransactionData{
+    string json {get;}
+    
+}
+
 public interface ResultData{
     Response response {get;}
 }

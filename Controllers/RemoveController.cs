@@ -36,14 +36,12 @@ public class RemoveController : ControllerBase
             var parameters = data.toParameterList();
 
             //direct test 
-             var result = await _db.RemoveAsync(new RemoveRequest{
+             var result = await _db.RemoveAsync(new DeleteContext{
                  table ="users",
-                 filter = new Filter{
-                    where = "id = @nid",
-                    parameters = new Dictionary<string, object>{
+                 where = "id = @nid",
+                    whereParams = new Dictionary<string, object>{
                         {"nid" , 5 }
-                    }.toParameterList()
-                }
+                    }
              });
              
            /* var result = await _client.GetResponse<ResultData>(new {request = new CreateRequest {

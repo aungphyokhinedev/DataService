@@ -1,4 +1,5 @@
 using MassTransit;
+using AplusExtension;
 namespace DataService;
 
 public class UpdateDataConsumer : IConsumer<UpdateData> 
@@ -12,12 +13,14 @@ public class UpdateDataConsumer : IConsumer<UpdateData>
     public async Task Consume(ConsumeContext<UpdateData> context)
     {   
         
-        var result = await _db.UpdateAsync(context.Message.request);
+        var result = await _db.UpdateAsync(RequestTransformer.toUpdate(context.Message.request));
        
         await context.RespondAsync<ResultData>(new
         {
             response = result
         });
     }
+
+    
 }
 

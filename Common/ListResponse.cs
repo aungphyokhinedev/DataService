@@ -7,5 +7,6 @@ public class ListResponse : IResponse{
     public long total{get;set;}
     
     public List<IDictionary<string,object>>? rows {get;set;}
-
+    public ResultCode code { get;set; }
+    public string? message { get;set; }
 }

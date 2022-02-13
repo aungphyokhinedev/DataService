@@ -19,6 +19,7 @@ builder.Services.AddMassTransit(x =>
                 x.AddConsumer<UpdateDataConsumer>();
                 x.AddConsumer<RemoveDataConsumer>();
                 x.AddConsumer<GetListDataConsumer>();
+                x.AddConsumer<TransactionConsumer>();
                 x.SetKebabCaseEndpointNameFormatter();
 
                 x.UsingRabbitMq((context, cfg) =>
@@ -36,6 +37,7 @@ builder.Services.AddMassTransit(x =>
                 x.AddRequestClient<UpdateData>();
                 x.AddRequestClient<RemoveData>();
                 x.AddRequestClient<GetList>();
+                x.AddRequestClient<TransactionData>();
 
             }).AddMassTransitHostedService();
 

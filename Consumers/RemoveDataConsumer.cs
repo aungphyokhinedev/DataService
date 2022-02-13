@@ -1,4 +1,5 @@
 using MassTransit;
+using AplusExtension;
 namespace DataService;
 
 public class RemoveDataConsumer : IConsumer<RemoveData> 
@@ -12,12 +13,14 @@ public class RemoveDataConsumer : IConsumer<RemoveData>
     public async Task Consume(ConsumeContext<RemoveData> context)
     {   
         
-        var result = await _db.RemoveAsync(context.Message.request);
+        var result = await _db.RemoveAsync(RequestTransformer.toDelete(context.Message.request));
        
         await context.RespondAsync<ResultData>(new
         {
             response = result
         });
     }
+
+    
 }
 

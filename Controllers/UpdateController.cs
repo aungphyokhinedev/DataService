@@ -36,25 +36,31 @@ public class UpdateController : ControllerBase
             var parameters = data.toParameterList();
 
             //direct test 
-             var result = await _db.UpdateAsync(new UpdateRequest{
+            /* var result = await _db.UpdateAsync(new UpdateRequest{
                  table ="users",
                  data = parameters,
                  filter = new Filter{
                     where = "id = @nid",
                     parameters = new Dictionary<string, object>{
-                        {"nid" , 4 }
+                        {"nid" , 6 }
                     }.toParameterList()
                 }
-             });
+             });*/
              
-           /* var result = await _client.GetResponse<ResultData>(new {request = new CreateRequest {
-                table = "users",
-                data = parameters
-            }});
+            var result = await _client.GetResponse<ResultData>(new {request = new UpdateRequest{
+                 table ="users",
+                 data = parameters,
+                 filter = new Filter{
+                    where = "id = @nid",
+                    parameters = new Dictionary<string, object>{
+                        {"nid" , 2 }
+                    }.toParameterList()
+                }
+             }});
 
-           */
+        
            
-            return result;  //result.Message.response;
+            return result.Message.response;
         
         }
 

@@ -1,5 +1,5 @@
 namespace DataService;
-public class UpdateRequest {
+public class UpdateRequest  : IRequest{
 
    public string? table {get;set;}
    public List<Parameter>? data{get;set;} 

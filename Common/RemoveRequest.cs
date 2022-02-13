@@ -1,5 +1,5 @@
 namespace DataService;
-public class RemoveRequest {
+public class RemoveRequest  : IRequest{
 
    public string? table {get;set;}
    public Filter? filter{get;set;}
