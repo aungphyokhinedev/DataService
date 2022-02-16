@@ -110,5 +110,17 @@ public static partial class Extensions
                     return x.value;
                 } );
     }
+
+     public static void AddDictionary(this Dictionary<string, object> source, Dictionary<string, object> items)
+    {
+        if (source == null)
+           ThrowExceptionWhenSourceArgumentIsNull();
+
+        foreach(var item in items){
+            source.Add(item.Key,item.Value);
+        }
+        
+    }
+
 }
 

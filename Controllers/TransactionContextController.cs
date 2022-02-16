@@ -27,6 +27,7 @@ public class TransactionController : ControllerBase
             List<QueryContext> requests = new List<QueryContext>();
              
             requests.Add(new UpdateContext{
+                tag = "update1",
                  table ="users",
                  data = new Dictionary<string, object>{
                         {"UID" , 70 }
@@ -43,6 +44,11 @@ public class TransactionController : ControllerBase
                  data = new Dictionary<string, object>{
                         {"UID" , 71 }
                     },
+                extraValues = new []{new ExtraValue{
+                    tag="update1",
+                    fieldName="id",
+                    parameterName="uid"
+                }}.ToList(),
                  where = "id = @nid",
                     whereParams = new Dictionary<string, object>{
                         {"nid" , 7 }

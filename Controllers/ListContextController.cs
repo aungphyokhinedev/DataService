@@ -22,7 +22,7 @@ public class ListController : ControllerBase
         public async Task<object> GetList(int page, int pageSize)
         {
             var request = new GetRequest{
-                tables="users", pageSize= pageSize, page= page,
+                tables="users",
                 fields = "id,uid,nrc,mobile_no,createdat",
                 orderBy = "id",
                 /*filter = new Filter{
@@ -34,7 +34,7 @@ public class ListController : ControllerBase
             };
 
             var data = new SelectContext{
-                tables="users", pageSize= pageSize, page= page,
+                tables="users",
                 fields = "id,uid,nrc,mobile_no,createdat",
                 orderBy = "id",
               /*  where = "id = 6",

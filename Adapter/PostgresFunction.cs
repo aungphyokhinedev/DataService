@@ -83,7 +83,7 @@ public class PostgresFunction {
                 Dictionary<string,object> wherevalues = data.whereParams;
 
                 var parameters = updatedata.Concat(wherevalues);
-      
+
                 string query = $"UPDATE {data.table} SET {values} WHERE {data.where} RETURNING *;";
 
                 var updated = transaction.IsNotNullOrEmpty()?await connection.QueryAsync(query, parameters, transaction):await connection.QueryAsync(query, parameters);
@@ -108,6 +108,19 @@ public class PostgresFunction {
                     code = ResultCode.OK,
                     message = "ok",
                     rows = deleted.Select(x => x as IDictionary<string,object>).ToList()
+                };
+     }
+
+     public static async Task<Response> runAsync(RunContext context, NpgsqlConnection connection, [Optional]NpgsqlTransaction transaction){
+         
+                
+                var result = transaction.IsNotNullOrEmpty()?await connection.QueryAsync(context.procedure, context.values,transaction):await connection.QueryAsync(context.procedure, context.values);
+                
+                return new Response
+                {
+                    code = ResultCode.OK,
+                    message = "ok",
+                    rows = result.Select(x => x as IDictionary<string,object>).ToList()
                 };
      }
 }

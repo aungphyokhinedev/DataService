@@ -1,7 +1,8 @@
 public interface IResponse {
  
-   public  ResultCode code{get;set;}
-   public string? message{get;set;}
+   ResultCode code{get;set;}
+   string? message{get;set;}
    
+   List<IDictionary<string,object>>? rows{get;set;} 
 
 }

@@ -46,4 +46,8 @@ public enum ResultCode : ushort
 
     NetworkAuthenticationRequired = 511,
 
+    DatabaseError = 520,
+
+    TimeoutError = 521,
+
 }

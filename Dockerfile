@@ -9,4 +9,4 @@ WORKDIR /app
 COPY --from=build /app/published-app /app
 ENTRYPOINT [ "dotnet", "/app/DataService.dll" ]
 
-#https://dev.to/berviantoleo/web-api-in-net-6-docker-41d5
+#https://docs.docker.com/samples/dotnetcore/
