@@ -51,7 +51,7 @@ public class PostgresFunction {
 
                 return new ListResponse
                 {
-                    code = (value != null && value.Count() > 0) ? ResultCode.OK : ResultCode.NoContent,
+                    code = ResultCode.OK,
                     total = total,
                     page = data.page,
                     pageSize = data.pageSize,
