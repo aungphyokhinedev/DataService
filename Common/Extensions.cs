@@ -52,26 +52,28 @@ public static partial class Extensions
     public static List<Parameter> toParameterList(this Dictionary<string, object> dict)
     {
 
-        return dict.Select(x=>new Parameter{
-                key =  x.Key,
-                value = x.Value,
-                type = x.Value.GetType()
-            }).ToList();
+        return dict.Select(x => new Parameter
+        {
+            key = x.Key,
+            value = x.Value,
+            type = x.Value.GetType()
+        }).ToList();
     }
 
     public static List<QueryRequest> toQueryRequest(this List<QueryContext> requests)
     {
 
-        return requests.Select(x=>new QueryRequest{
-                request = JsonConvert.SerializeObject(x),
-                type = x.GetType()
-            }).ToList();
+        return requests.Select(x => new QueryRequest
+        {
+            request = JsonConvert.SerializeObject(x),
+            type = x.GetType()
+        }).ToList();
     }
 
     public static IDictionary<string, T> ToDictionary<T>(this object source)
     {
         if (source == null)
-           ThrowExceptionWhenSourceArgumentIsNull();
+            ThrowExceptionWhenSourceArgumentIsNull();
 
         var dictionary = new Dictionary<string, T>();
         foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
@@ -79,10 +81,21 @@ public static partial class Extensions
         return dictionary;
     }
 
+    public static Dictionary<string, object> ToDictionary(this object source)
+    {
+        if (source == null)
+            ThrowExceptionWhenSourceArgumentIsNull();
+
+        var dictionary = new Dictionary<string, object>();
+        foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
+            AddPropertyToDictionary<object>(property, source, dictionary);
+        return dictionary;
+    }
+
     private static void AddPropertyToDictionary<T>(PropertyDescriptor property, object source, Dictionary<string, T> dictionary)
     {
         object value = property.GetValue(source);
-        if (IsOfType<T>(value))
+        if (value != null && IsOfType<T>(value))
             dictionary.Add(property.Name, (T)value);
     }
 
@@ -97,30 +110,66 @@ public static partial class Extensions
     }
 
 
-     public static Dictionary<string?, object?> toDictionaryList(this List<Parameter> list)
+    public static Dictionary<string?, object?> toDictionaryList(this List<Parameter> list)
     {
-        if(list == null) return null;
+        if (list == null) return null;
 
-        return list.ToDictionary(x=>x.key,x=>{
-                    
-                    ///this is for message queue serialization on date data problem
-                    if(x.type == typeof(DateTimeOffset)){
-                        return DateTimeOffset.Parse(x.value.ToString());
-                    }
-                    return x.value;
-                } );
+        return list.ToDictionary(x => x.key, x =>
+        {
+
+            ///this is for message queue serialization on date data problem
+            //we may need to add new datatype later
+            if (x.type == typeof(DateTimeOffset))
+            {
+                return DateTimeOffset.Parse(x.value.ToString());
+            }
+            return x.value;
+        });
     }
 
-     public static void AddDictionary(this Dictionary<string, object> source, Dictionary<string, object> items)
+    public static void AddDictionary(this Dictionary<string, object> source, Dictionary<string, object> items)
     {
         if (source == null)
-           ThrowExceptionWhenSourceArgumentIsNull();
+            ThrowExceptionWhenSourceArgumentIsNull();
 
-        foreach(var item in items){
-            source.Add(item.Key,item.Value);
+        foreach (var item in items)
+        {
+            source.Add(item.Key, item.Value);
         }
-        
+
     }
+
+    public static List<T> toList<T>(this List<IDictionary<string, object>> list)
+    {
+        return list.Select(x => x.toObject<T>()).ToList<T>();
+    }
+
+    public static T toObject<T>(this IDictionary<string, object> dict)
+    {
+        T obj = (T)Activator.CreateInstance(typeof(T));
+        PropertyInfo[] props = obj.GetType().GetProperties();
+        foreach (var prop in props)
+        {
+            var val = dict.Where(d => d.Key.ToLower() == prop.Name.ToLower()).Select(x => x.Value).FirstOrDefault();
+            if (val != null)
+            {
+                var type = prop.PropertyType;
+                //we may need to add new datatype later
+                if (type == typeof(DateTimeOffset))
+                {
+                    prop.SetValue(obj, DateTimeOffset.Parse(val.ToString()));
+                }
+                else
+                {
+                    prop.SetValue(obj, val);
+                }
+            }
+        }
+
+        return obj;
+    }
+
+
 
 }
 

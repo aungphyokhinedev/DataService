@@ -123,4 +123,5 @@ public class PostgresFunction {
                     rows = result.Select(x => x as IDictionary<string,object>).ToList()
                 };
      }
+
 }

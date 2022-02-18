@@ -1,5 +1,5 @@
 public class users{
-    public int UID {get;set;}
+    public long UID {get;set;}
     public string NRC {get;set;}
     public string Mobile_no {get;set;}
     public string Email {get;set;}
