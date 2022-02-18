@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-
+using AplusExtension;
 using MassTransit;
 namespace DataService.Controllers;
 
@@ -20,34 +20,18 @@ public class ListController : ControllerBase
 
    [HttpPost]
         public async Task<object> GetList(int page, int pageSize)
-        {
-            var request = new GetRequest{
-                tables="users",
-                fields = "id,uid,nrc,mobile_no,createdat",
-                orderBy = "id",
-                /*filter = new Filter{
-                    where = "id = 4",
-                    parameters = new Dictionary<string, object>{
-                        {"id" , 4 }
-                    }.toParameterList()
-                }*/
+        {   
+            var finduser = new {
+                uid = 6
             };
-
-            var data = new SelectContext{
-                tables="users",
-                fields = "id,uid,nrc,mobile_no,createdat",
-                orderBy = "id",
-              /*  where = "id = 6",
-                    whereParams = new Dictionary<string, object>{
-                        {"id" , 4 }
-                    }*/
-            };
+            var request = new Query("users").Where("id = @uid").Set(finduser).Select("id,uid,nrc,mobile_no").Order("id").Limit(10).Page(1).Request();
+            
            
-          // var result = await _client.GetResponse<ListData>(new {request=request});
+           var result = await _client.GetResponse<ListData>(new {request=request});
 
-           var result = await _db.GetListAsync(data);
-           
-            return  result; //result.Message.response;
+           //var result = await _db.GetListAsync(data);
+            var data =  result.Message.response.rows.toList<users>();
+            return  result.Message.response;
         }
 
 

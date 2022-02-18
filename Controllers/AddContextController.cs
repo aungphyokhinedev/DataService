@@ -21,19 +21,17 @@ public class AddController : ControllerBase
        [HttpPost]
         public async Task<DataService.Response> Add()
         {
-         
-            var data = new Dictionary<string, object>{
-                        {"UID" , 4 },
-                        {"NRC" , "12/pzt(N)9400" },
-                        {"PIN" , "12120" },
-                        {"Mobile_no" , "059505" },
-                        {"Email" , "old@gmail.com" },
-                        {"CreatedAt" , (DateTimeOffset)DateTime.Now },
-                        {"EditedAt" , (DateTimeOffset)DateTime.Now },
-                        {"DeleteFlag" , false },
-                    };
-           
-            var parameters = data.toParameterList();
+            var newuser = new {
+                uid = 4,
+                nrc = "12/pzt(N)9400",
+                pin = "2000033",
+                mobile_no = "090400440",
+                email = "thiargy@abank.com.mm",
+                createdat = (DateTimeOffset)DateTime.Now,
+                editedat = (DateTimeOffset)DateTime.Now,
+                deleteflag = false
+            };
+            var request = new Query("users").Insert(newuser).Request();
 
             //direct test 
           /*   var result = await _db.AddAsync(new CreateRequest{
@@ -41,13 +39,8 @@ public class AddController : ControllerBase
                  data = parameters
              });
              */
-            var result = await _client.GetResponse<ResultData>(new {request = new CreateRequest {
-                table = "users",
-                data = parameters
-            }});
-
-           
-           
+            var result = await _client.GetResponse<ResultData>(new {request = request});
+            var data = result.Message.response.rows.toList<users>();
             return   (Response)result.Message.response;
         
         }
