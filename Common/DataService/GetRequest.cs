@@ -1,5 +1,5 @@
 namespace DataService;
-public class GetRequest : IRequest
+public class GetRequest : QueryRequest 
 {
    public int page {get;set;} = 1;
    public int pageSize{get;set;} = 10;
@@ -9,4 +9,6 @@ public class GetRequest : IRequest
 
    public string? orderBy {get;set;}
    public string? groupBy {get;set;}
+
+
 }

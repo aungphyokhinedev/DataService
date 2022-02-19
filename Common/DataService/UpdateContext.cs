@@ -8,4 +8,5 @@ public class UpdateContext : QueryContext
    public string where{get;set;}
    public Dictionary<string,object> whereParams {get;set;}
 
+   public string? tag { get; set; }
 }

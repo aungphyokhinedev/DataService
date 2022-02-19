@@ -17,44 +17,25 @@ public class TransactionController : ControllerBase
     {
         _client = client;
         _logger = logger;
-        _db = db; //http://localhost:5033/AddContext
+        _db = db; 
     }
 
        [HttpPost]
         public async Task<DataService.Response> Do()
         {
          
-            List<QueryContext> requests = new List<QueryContext>();
-             
-            requests.Add(new UpdateContext{
-                tag = "update1",
-                 table ="users",
-                 data = new Dictionary<string, object>{
-                        {"UID" , 70 }
-                    },
-                where = "id = @nid",
-                    whereParams = new Dictionary<string, object>{
-                        {"nid" , 6 }
-                    }
-                
-             });
+            List<dynamic> arr = new List<dynamic>();
 
-             requests.Add(new UpdateContext{
-                 table ="users",
-                 data = new Dictionary<string, object>{
-                        {"UID" , 71 }
-                    },
-                extraValues = new []{new ExtraValue{
-                    tag="update1",
-                    fieldName="id",
-                    parameterName="uid"
-                }}.ToList(),
-                 where = "id = @nid",
-                    whereParams = new Dictionary<string, object>{
-                        {"nid" , 7 }
-                    }
-                
-             });
+            var r1 = new Query("users")
+            .Update(new{uid = 72,deviceid = "789"})
+            .Where("id = @id",new { id= 6, })
+            .As("u1").Request();
+
+            var r2 = new Query("users").Update(new{deviceid = "@u1.deviceid"}).Where("id = @userid",new{userid = 7}).Request();
+             
+            arr.Add(r1);
+            arr.Add(r2);
+            var requests = arr.toTypedQueryList();
 
 
             //direct test 
@@ -63,10 +44,7 @@ public class TransactionController : ControllerBase
                  data = parameters
              });
              */
-            var result = await _client.GetResponse<ResultData>(new {json = JsonConvert.SerializeObject(requests.toQueryRequest())});
-
-           
-           
+            var result = await _client.GetResponse<ResultData>(new {requests = requests});
             return   (Response)result.Message.response;
         
         }

@@ -11,51 +11,25 @@ public class RemoveController : ControllerBase
 
     private readonly ILogger<RemoveController> _logger;
     private IDataContext _db;
-    public RemoveController(ILogger<RemoveController> logger, IDataContext db,IRequestClient<RemoveData> client)
+    public RemoveController(ILogger<RemoveController> logger, IDataContext db, IRequestClient<RemoveData> client)
     {
         _client = client;
         _logger = logger;
         _db = db;
     }
 
-      [HttpPost]
-        public async Task<DataService.Response> Remove()
-        {
-           
-            
-            var data = new Dictionary<string, object>{
-                        {"UID" , 250 },
-                        {"NRC" , "12/pzt(N)9400" },
-                        {"PIN" , "12120" },
-                        {"Mobile_no" , "12345" },
-                      //  {"Email" , "new@gmail.com" },
-                      
-                        {"DeleteFlag" , true },
-                    };
-           
-            var parameters = data.toParameterList();
+    [HttpPost]
+    public async Task<DataService.Response> Remove()
+    {
+        var request = new Query("users").Delete().Where("id = @nid", new { nid = 10 }).Request();
 
-            //direct test 
-             var result = await _db.RemoveAsync(new DeleteContext{
-                 table ="users",
-                 where = "id = @nid",
-                    whereParams = new Dictionary<string, object>{
-                        {"nid" , 5 }
-                    }
-             });
-             
-           /* var result = await _client.GetResponse<ResultData>(new {request = new CreateRequest {
-                table = "users",
-                data = parameters
-            }});
+        var result = await _client.GetResponse<ResultData>(new { request = request });
 
-           */
-           
-            return result;  //result.Message.response;
-        
-        }
+        return result.Message.response;
 
-        
+    }
+
+
 }
 
 

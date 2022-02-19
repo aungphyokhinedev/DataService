@@ -1,3 +1,5 @@
-public interface IRequest {
+namespace DataService;
 
+public interface IRequest {
+   
 }

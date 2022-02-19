@@ -10,4 +10,5 @@ public class SelectContext : QueryContext{
 
    public string? orderBy {get;set;}
    public string? groupBy {get;set;}
+   public string? tag { get; set; }
 }

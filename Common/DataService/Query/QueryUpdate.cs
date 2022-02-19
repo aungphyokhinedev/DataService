@@ -2,28 +2,56 @@ using AplusExtension;
 namespace DataService;
 public class QueryUpdate
 {
-    private List<Parameter> data { get; set; }
-    private Query query { get; set; }
+    private List<Parameter> _data { get; set; }
+    private Query _query { get; set; }
 
-    public QueryUpdate(Query _query, Dictionary<string, object> _data)
+    private string _tag { get; set; }
+
+    public QueryUpdate As(string tag)
     {
-        data = _data.toParameterList();
-        query = _query;
+        _tag = tag;
+        return this;
     }
 
-    public UpdateRequest Request(){
-      if(this.query.IsNotNullOrEmpty() && this.query.where.IsNotNullOrEmpty()) {
-        return new UpdateRequest {
-            table = this.query.tables,
-            filter = new Filter {
-                where = this.query.where,
-                parameters = this.query.parameters
-            },
-            data = this.data
-        };
-      }
-      else {
-           throw new Exception("Where clause is required for update query");
-      }
+    private string _where { get; set; }
+    public List<Parameter>? _parameters { get; set; }
+
+    public QueryUpdate Where(string where, object parameter)
+    {
+        _where = where.isParameterized();
+        _parameters = parameter.ToDictionary().toParameterList();
+        return this;
+    }
+
+    public QueryUpdate(Query query, object data)
+    {
+        _data = data.ToDictionary().toParameterList();
+        _query = query;
+    }
+
+    public UpdateRequest Request()
+    {
+        if (this._query.IsNotNullOrEmpty() && this._where.IsNotNullOrEmpty())
+        {
+            return new UpdateRequest
+            {
+                table = this._query._tables,
+                filter = new Filter
+                {
+                    where = this._where,
+                    parameters = this._parameters
+                },
+                data = this._data,
+                tag = this._tag,
+            };
+        }
+        else
+        {
+            throw new Exception("Where clause is required for update query");
+        }
+    }
+
+    public async Task<Response> ExecuteAsync(IDataContext db){
+        return await db.UpdateAsync(this.Request().toUpdate());
     }
 }

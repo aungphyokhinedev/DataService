@@ -28,7 +28,7 @@ public interface RemoveData{
 }
 
 public interface TransactionData{
-    string json {get;}
+    List<TypedQuery> requests {get;}
     
 }
 

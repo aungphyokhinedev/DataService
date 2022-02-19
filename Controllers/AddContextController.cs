@@ -33,6 +33,8 @@ public class AddController : ControllerBase
             };
             var request = new Query("users").Insert(newuser).Request();
 
+            //direct db calling
+           var dbresult = await new Query("users").Insert(newuser).ExecuteAsync(_db);
             //direct test 
           /*   var result = await _db.AddAsync(new CreateRequest{
                  table ="users",

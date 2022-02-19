@@ -4,25 +4,47 @@ namespace DataService;
 public class QueryDelete
 {
 
-    private Query query { get; set; }
+    private Query _query { get; set; }
+    private string _tag { get; set; }
 
-    public QueryDelete(Query _query)
+    private string _where { get; set; }
+    public List<Parameter>? _parameters { get; set; }
+
+    public QueryDelete Where(string where, object parameter)
     {
-        query = _query;
+        _where = where.isParameterized();
+        _parameters = parameter.ToDictionary().toParameterList();
+        return this;
+    }
+
+
+    public QueryDelete(Query query)
+    {
+        _query = query;
+    }
+
+    public QueryDelete As(string tag)
+    {
+        _tag = tag;
+        return this;
     }
 
     public RemoveRequest Request()
     {
-        if (this.query.IsNotNullOrEmpty() && this.query.where.IsNotNullOrEmpty())
+        if (this._query.IsNotNullOrEmpty() && this._where.IsNotNullOrEmpty())
         {
             return new RemoveRequest
             {
-                table = this.query.tables,
+                table = this._query._tables,
+                tag = this._tag,
                 filter = new Filter
                 {
-                    where = this.query.where,
-                    parameters = this.query.parameters
+                    where = this._where,
+                    parameters = this._parameters,
+
                 },
+
+
             };
         }
         else
@@ -31,6 +53,10 @@ public class QueryDelete
         }
 
 
+    }
+
+    public async Task<Response> ExecuteAsync(IDataContext db){
+        return await db.RemoveAsync(this.Request().toDelete());
     }
 
 }

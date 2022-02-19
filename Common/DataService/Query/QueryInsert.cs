@@ -3,22 +3,32 @@ namespace DataService;
 
 public class QueryInsert
 {
-    public List<Parameter> data { get; set; }
-    private Query query { get; set; }
+    public List<Parameter> _data { get; set; }
+    private Query _query { get; set; }
 
+    private string _tag { get; set; }
 
-    public QueryInsert(Query _query, Dictionary<string, object> _data)
+   public QueryInsert As(string tag)
     {
-        data = _data.toParameterList();
-        query = _query;
+        _tag = tag;
+        return this;
+    }
+
+    public QueryInsert(Query query, object data)
+    {
+        _data = data.ToDictionary().toParameterList();
+        _query = query;
     }
 
     public CreateRequest Request(){
         return new CreateRequest {
-            table = this.query.tables,
-            data = this.data
+            table = this._query._tables,
+            data = this._data,
+           tag = this._tag,
         };
     }
 
-
+    public async Task<Response> ExecuteAsync(IDataContext db){
+        return await db.AddAsync(this.Request().toInsert());
+    }
 }

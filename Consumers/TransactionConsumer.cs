@@ -11,7 +11,7 @@ public class TransactionConsumer : IConsumer<TransactionData>
 
     public async Task Consume(ConsumeContext<TransactionData> context)
     {   
-        var data = RequestTransformer.toListRequests(context.Message.json);
+        var data = RequestTransformer.toListRequests(context.Message.requests);
         var result = await _db.TransactionAsync(data);
        
         await context.RespondAsync<ResultData>(new

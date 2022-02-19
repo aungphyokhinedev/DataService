@@ -60,15 +60,17 @@ public static partial class Extensions
         }).ToList();
     }
 
-    public static List<QueryRequest> toQueryRequest(this List<QueryContext> requests)
+  
+    public static List<TypedQuery> toTypedQueryList(this List<dynamic> list)
     {
 
-        return requests.Select(x => new QueryRequest
+        return list.Select(x => new TypedQuery
         {
-            request = JsonConvert.SerializeObject(x),
+            request =  JsonConvert.SerializeObject(x),
             type = x.GetType()
         }).ToList();
     }
+
 
     public static IDictionary<string, T> ToDictionary<T>(this object source)
     {

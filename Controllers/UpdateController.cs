@@ -21,45 +21,16 @@ public class UpdateController : ControllerBase
        [HttpPost]
         public async Task<DataService.Response> Update()
         {
-           
             
-            var data = new Dictionary<string, object>{
-                        {"UID" , 250 },
-                        {"NRC" , "12/pzt(N)9400" },
-                        {"PIN" , "12120" },
-                        {"Mobile_no" , "12345" },
-                      //  {"Email" , "new@gmail.com" },
-                      
-                        {"DeleteFlag" , true },
-                    };
-           
-            var parameters = data.toParameterList();
+            var edituser = new users{
+                UID = 250,
+                NRC = "12/pzt(N)940045"
+            };
 
-            //direct test 
-            /* var result = await _db.UpdateAsync(new UpdateRequest{
-                 table ="users",
-                 data = parameters,
-                 filter = new Filter{
-                    where = "id = @nid",
-                    parameters = new Dictionary<string, object>{
-                        {"nid" , 6 }
-                    }.toParameterList()
-                }
-             });*/
+            var request = new Query("users").Update(edituser).Where("id=@id",new {id=15}).Request();
              
-            var result = await _client.GetResponse<ResultData>(new {request = new UpdateRequest{
-                 table ="users",
-                 data = parameters,
-                 filter = new Filter{
-                    where = "id = @nid",
-                    parameters = new Dictionary<string, object>{
-                        {"nid" , 2 }
-                    }.toParameterList()
-                }
-             }});
-
-        
-           
+            var result = await _client.GetResponse<ResultData>(new {request = request});
+          
             return result.Message.response;
         
         }
