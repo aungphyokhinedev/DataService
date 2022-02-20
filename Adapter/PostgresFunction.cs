@@ -53,7 +53,7 @@ public class PostgresFunction
 
         return new ListResponse
         {
-            code = ResultCode.OK,
+            code = value.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
             total = total,
             page = data.page,
             pageSize = data.pageSize,
@@ -73,7 +73,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = ResultCode.OK,
+            code = created.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
             rows = created.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
@@ -92,7 +92,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = ResultCode.OK,
+            code = updated.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
             rows = updated.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
@@ -107,7 +107,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = ResultCode.OK,
+            code = deleted.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
             rows = deleted.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
