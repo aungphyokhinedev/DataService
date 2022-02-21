@@ -116,7 +116,7 @@ public class PostgresFunction
     {
 
 
-        var result = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(context.procedure, context.values, transaction) : await connection.QueryAsync(context.procedure, context.values);
+        var result = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(context.procedure, context.values, transaction) : await  connection.QueryAsync(context.procedure, context.values);
 
         return new Response
         {

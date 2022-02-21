@@ -1,4 +1,5 @@
 using AplusExtension;
+using Newtonsoft.Json;
 
 namespace DataService;
 public class QuerySelect
@@ -82,6 +83,13 @@ public class QuerySelect
             },
             tag = this._tag,
 
+        };
+    }
+
+    public DataServiceContract Contract(){
+        return new QueryContract{
+            type = QueryTypes.Listing,
+            request = JsonConvert.SerializeObject(this.Request())
         };
     }
 
