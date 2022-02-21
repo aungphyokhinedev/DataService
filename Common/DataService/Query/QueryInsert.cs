@@ -1,4 +1,6 @@
 using AplusExtension;
+using Newtonsoft.Json;
+
 namespace DataService;
 
 public class QueryInsert
@@ -25,6 +27,13 @@ public class QueryInsert
             table = this._query._tables,
             data = this._data,
            tag = this._tag,
+        };
+    }
+
+    public DataServiceContract Contract(){
+        return new QueryContract{
+            type = QueryTypes.Create,
+            request = JsonConvert.SerializeObject(this.Request())
         };
     }
 

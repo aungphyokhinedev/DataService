@@ -1,4 +1,6 @@
 using AplusExtension;
+using Newtonsoft.Json;
+
 namespace DataService;
 public class QueryUpdate
 {
@@ -51,6 +53,12 @@ public class QueryUpdate
         }
     }
 
+    public DataServiceContract Contract(){
+        return new QueryContract{
+            type = QueryTypes.Update,
+            request = JsonConvert.SerializeObject(this.Request())
+        };
+    }
     public async Task<Response> ExecuteAsync(IDataContext db){
         return await db.UpdateAsync(this.Request().toUpdate());
     }

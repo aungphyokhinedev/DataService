@@ -158,14 +158,14 @@ public class PostgresDataContext : IDataContext
 
     //in this methods all queries will execute under transaction control
     //to fetch data from one query result use extra value params
-    public async Task<IResponse> TransactionAsync(List<QueryContext> requests)
+    public async Task<Response> TransactionAsync(List<QueryContext> requests)
     {
         using (var connection = new NpgsqlConnection(_config["DbConnection"]))
         {
             try
             {
                 connection.Open();
-                Dictionary<string,IResponse> responses = new Dictionary<string,IResponse>();
+                Dictionary<string,Response> responses = new Dictionary<string,Response>();
 
                 using (var transaction = connection.BeginTransaction())
                 {
@@ -211,10 +211,7 @@ public class PostgresDataContext : IDataContext
                             }
                           
                         }
-
                         transaction.Commit();
-
-
                     }
                     catch (Exception ex)
                     {
@@ -224,6 +221,9 @@ public class PostgresDataContext : IDataContext
                             code = ResultCode.DatabaseError,
                             message = ex.Message
                         };
+                    }
+                    finally{
+                        
                     }
                 }
 

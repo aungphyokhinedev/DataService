@@ -11,5 +11,5 @@ public interface IDataContext  {
 
     Task<Response> RemoveAsync(DeleteContext request);
 
-    Task<IResponse> TransactionAsync(List<QueryContext> requests);
+    Task<Response> TransactionAsync(List<QueryContext> requests);
 }

@@ -61,14 +61,20 @@ public static partial class Extensions
     }
 
   
-    public static List<TypedQuery> toTypedQueryList(this List<dynamic> list)
+    public static QueryContract toContract(this List<dynamic> list)
     {
 
-        return list.Select(x => new TypedQuery
+        var requests = list.Select(x => new TypedQuery
         {
             request =  JsonConvert.SerializeObject(x),
             type = x.GetType()
         }).ToList();
+
+        return new QueryContract{
+            type = QueryTypes.Transaction,
+            request = JsonConvert.SerializeObject(requests)
+        };
+
     }
 
 

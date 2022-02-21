@@ -1,5 +1,7 @@
 
 using AplusExtension;
+using Newtonsoft.Json;
+
 namespace DataService;
 public class QueryDelete
 {
@@ -53,6 +55,13 @@ public class QueryDelete
         }
 
 
+    }
+
+    public DataServiceContract Contract(){
+        return new QueryContract{
+            type = QueryTypes.Remove,
+            request = JsonConvert.SerializeObject(this.Request())
+        };
     }
 
     public async Task<Response> ExecuteAsync(IDataContext db){

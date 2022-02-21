@@ -13,13 +13,9 @@ builder.Services.AddScoped<IDataContext, PostgresDataContext>();
 // for message bus
 builder.Services.AddMassTransit(x =>
             {
-                //x.AddConsumers(Assembly.GetExecutingAssembly());
-               
-                x.AddConsumer<AddDataConsumer>();
-                x.AddConsumer<UpdateDataConsumer>();
-                x.AddConsumer<RemoveDataConsumer>();
-                x.AddConsumer<GetListDataConsumer>();
-                x.AddConsumer<TransactionConsumer>();
+           
+                x.AddConsumer<QueryConsumer>();
+
                 x.SetKebabCaseEndpointNameFormatter();
 
                 x.UsingRabbitMq((context, cfg) =>
@@ -32,12 +28,8 @@ builder.Services.AddMassTransit(x =>
                 });
 
 
-               
-                x.AddRequestClient<AddData>();
-                x.AddRequestClient<UpdateData>();
-                x.AddRequestClient<RemoveData>();
-                x.AddRequestClient<GetList>();
-                x.AddRequestClient<TransactionData>();
+                x.AddRequestClient<DataServiceContract>();
+            
 
             }).AddMassTransitHostedService();
 

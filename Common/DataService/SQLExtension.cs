@@ -32,7 +32,7 @@ public static partial class SQLExtensions
     }
 
     //getting extra value from previous query results by tag name and file name
-    public static void setValues(this Dictionary<string, object> paras, Dictionary<string, IResponse> responses)
+    public static void setValues(this Dictionary<string, object> paras, Dictionary<string, Response> responses)
     {
 
         foreach (var p in paras)

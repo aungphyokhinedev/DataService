@@ -35,3 +35,7 @@ public interface TransactionData{
 public interface ResultData{
     Response response {get;}
 }
+
+public interface TestData{
+    string response {get;}
+}
