@@ -1,8 +1,8 @@
 using System.Runtime.InteropServices;
 using AplusExtension;
 using Dapper;
-using DataService;
 using Npgsql;
+namespace DataService;
 
 public class PostgresFunction
 {
