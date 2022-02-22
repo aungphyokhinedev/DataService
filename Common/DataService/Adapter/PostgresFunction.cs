@@ -1,8 +1,9 @@
 using System.Runtime.InteropServices;
 using AplusExtension;
 using Dapper;
-using DataService;
+using Microsoft.AspNetCore.Http;
 using Npgsql;
+namespace DataService;
 
 public class PostgresFunction
 {
@@ -53,7 +54,7 @@ public class PostgresFunction
 
         return new ListResponse
         {
-            code = value.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
+            code = StatusCodes.Status200OK,
             total = total,
             page = data.page,
             pageSize = data.pageSize,
@@ -73,7 +74,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = created.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
+            code = StatusCodes.Status200OK,
             rows = created.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
@@ -92,7 +93,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = updated.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
+            code = StatusCodes.Status200OK,
             rows = updated.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
@@ -107,7 +108,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = deleted.Count() > 0 ? ResultCode.OK : ResultCode.NoContent,
+            code = StatusCodes.Status200OK,
             rows = deleted.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
@@ -120,7 +121,7 @@ public class PostgresFunction
 
         return new Response
         {
-            code = ResultCode.OK,
+            code = StatusCodes.Status200OK,
             rows = result.Select(x => x as IDictionary<string, object>).ToList()
         };
     }

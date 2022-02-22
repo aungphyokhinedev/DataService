@@ -1,6 +1,9 @@
 
 using Npgsql;
 using AplusExtension;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+
 namespace DataService;
 public class LogDataContext : IDataContext
 {
@@ -25,7 +28,7 @@ public class LogDataContext : IDataContext
             {
                 return new ListResponse
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -51,7 +54,7 @@ public class LogDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -78,7 +81,7 @@ public class LogDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -100,7 +103,7 @@ public class LogDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.InternalServerError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -132,7 +135,7 @@ public class LogDataContext : IDataContext
                         transaction.Rollback();
                         return new Response
                         {
-                            code = ResultCode.DatabaseError,
+                            code = StatusCodes.Status500InternalServerError,
                             message = ex.Message
                         };
                     }
@@ -144,7 +147,7 @@ public class LogDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -221,7 +224,7 @@ public class LogDataContext : IDataContext
                         transaction.Rollback();
                         return new Response
                         {
-                            code = ResultCode.DatabaseError,
+                            code =  StatusCodes.Status500InternalServerError,
                             message = ex.Message
                         };
                     }
@@ -233,7 +236,7 @@ public class LogDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }

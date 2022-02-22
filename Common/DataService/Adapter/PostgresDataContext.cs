@@ -1,6 +1,7 @@
 
 using Npgsql;
 using AplusExtension;
+
 namespace DataService;
 public class PostgresDataContext : IDataContext
 {
@@ -25,7 +26,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new ListResponse
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -51,7 +52,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -78,7 +79,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -100,7 +101,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.InternalServerError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -132,7 +133,7 @@ public class PostgresDataContext : IDataContext
                         transaction.Rollback();
                         return new Response
                         {
-                            code = ResultCode.DatabaseError,
+                            code = StatusCodes.Status500InternalServerError,
                             message = ex.Message
                         };
                     }
@@ -144,7 +145,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
@@ -218,7 +219,7 @@ public class PostgresDataContext : IDataContext
                         transaction.Rollback();
                         return new Response
                         {
-                            code = ResultCode.DatabaseError,
+                            code = StatusCodes.Status500InternalServerError,
                             message = ex.Message
                         };
                     }
@@ -233,7 +234,7 @@ public class PostgresDataContext : IDataContext
             {
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = e.Message
                 };
             }
