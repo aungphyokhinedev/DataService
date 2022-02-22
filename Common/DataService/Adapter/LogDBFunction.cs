@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using AplusExtension;
 using Dapper;
 using DataService;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Npgsql;
 
@@ -42,7 +43,7 @@ public class LogDbFunction {
                 
                 return new ListResponse
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     page = data.page,
                     pageSize = data.pageSize,
                 };
@@ -60,7 +61,7 @@ public class LogDbFunction {
                 
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = "ok",
                     rows = new List<IDictionary<string,object>>()
                 };
@@ -80,7 +81,7 @@ public class LogDbFunction {
                 Console.WriteLine(JsonConvert.SerializeObject(parameters));
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = "ok",
                    rows = new List<IDictionary<string,object>>()
                 };
@@ -96,7 +97,7 @@ public class LogDbFunction {
                 
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = "ok",
                     rows = new List<IDictionary<string,object>>()
                 };
@@ -110,7 +111,7 @@ public class LogDbFunction {
                 
                 return new Response
                 {
-                    code = ResultCode.DatabaseError,
+                    code = StatusCodes.Status500InternalServerError,
                     message = "ok",
                    rows = new List<IDictionary<string,object>>()
                 };
