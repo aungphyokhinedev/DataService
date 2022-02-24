@@ -1,13 +1,12 @@
 using System.Runtime.InteropServices;
 using AplusExtension;
 using Dapper;
-using Microsoft.AspNetCore.Http;
 using Npgsql;
 namespace DataService;
 
 public class PostgresFunction
 {
-    public static async Task<ListResponse> getAsync(SelectContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
+    public async Task<ListResponse> getAsync(SelectContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
     {
         string query = $"Select {data.fields} from {data.tables}";
         object parameters = new object { };
@@ -61,7 +60,7 @@ public class PostgresFunction
             rows = value.Select(x => x as IDictionary<string, object>).ToList()
         };
     }
-    public static async Task<Response> insertAsync(InsertContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
+    public async Task<Response> insertAsync(InsertContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
     {
         string columns = String.Join(",", data.data.Select(x => x.Key));
         string values = String.Join(",", data.data.Select(x => $"@{x.Key}"));
@@ -70,16 +69,11 @@ public class PostgresFunction
 
         string query = $"INSERT INTO {data.table} ({columns}) VALUES ({values}) RETURNING *;";
 
-        var created = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(query, parameters, transaction) : await connection.QueryAsync(query, parameters);
-
-        return new Response
-        {
-            code = StatusCodes.Status200OK,
-            rows = created.Select(x => x as IDictionary<string, object>).ToList()
-        };
+        var result = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(query, parameters, transaction) : await connection.QueryAsync(query, parameters);
+        return checkResult(result);
     }
 
-    public static async Task<Response> setAsync(UpdateContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
+    public async Task<Response> setAsync(UpdateContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
     {
         string values = String.Join(",", data.data.Select(x => $"{x.Key} = @{x.Key}"));
         Dictionary<string, object> updatedata = data.data;
@@ -89,41 +83,44 @@ public class PostgresFunction
 
         string query = $"UPDATE {data.table} SET {values} WHERE {data.where} RETURNING *;";
 
-        var updated = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(query, parameters, transaction) : await connection.QueryAsync(query, parameters);
-
-        return new Response
-        {
-            code = StatusCodes.Status200OK,
-            rows = updated.Select(x => x as IDictionary<string, object>).ToList()
-        };
+        var result = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(query, parameters, transaction) : await connection.QueryAsync(query, parameters);
+        return checkResult(result);
     }
 
-    public static async Task<Response> deleteAsync(DeleteContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
+    public async Task<Response> deleteAsync(DeleteContext data, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
     {
         Dictionary<string, object> parameters = data.whereParams;
 
         string query = $"DELETE FROM {data.table}  WHERE {data.where} RETURNING *;";
 
-        var deleted = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(query, parameters, transaction) : await connection.QueryAsync(query, parameters);
+        var result = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(query, parameters, transaction) : await connection.QueryAsync(query, parameters);
 
-        return new Response
-        {
-            code = StatusCodes.Status200OK,
-            rows = deleted.Select(x => x as IDictionary<string, object>).ToList()
-        };
+        return checkResult(result);
     }
 
-    public static async Task<Response> runAsync(RunContext context, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
+    public async Task<Response> runAsync(RunContext context, NpgsqlConnection connection, [Optional] NpgsqlTransaction transaction)
     {
 
 
         var result = transaction.IsNotNullOrEmpty() ? await connection.QueryAsync(context.procedure, context.values, transaction) : await  connection.QueryAsync(context.procedure, context.values);
+        return checkResult(result);
+        
+    }
 
-        return new Response
-        {
-            code = StatusCodes.Status200OK,
-            rows = result.Select(x => x as IDictionary<string, object>).ToList()
-        };
+    private Response checkResult(IEnumerable<dynamic>? result) {
+        if(result == null) {
+            throw new Exception("Execution fail");
+        }
+        else if(result.Count() == 0){
+            throw new Exception("No data is executing");
+        }
+        else{
+            return new Response
+            {
+                code = StatusCodes.Status200OK,
+                rows = result.Select(x => x as IDictionary<string, object>).ToList()
+            };
+        }
     }
 
 }

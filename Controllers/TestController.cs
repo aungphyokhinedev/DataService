@@ -59,7 +59,7 @@ public class TestController : ControllerBase
         {
             uid = 7
         };
-        var contract = new Query("users").Select("id,uid,nrc,mobile_no,deviceid").Where("id = users.id", paras).Order("id").Limit(10).Page(1).Contract();
+        var contract = new Query("users").Select("id,uid,nrc,mobile_no,deviceid").Where("id = users.id", paras).Order("id").Limit(pageSize).Page(page).Contract();
 
         var result = await contract.ExecuteListAsync(_client);
         
@@ -102,11 +102,11 @@ public class TestController : ControllerBase
         List<dynamic> arr = new List<dynamic>();
 
         var r1 = new Query("users")
-        .Update(new { uid = 72, deviceid = "123" })
-        .Where("id = @id", new { id = 2, })
+        .Update(new { uid = 72, deviceid = "666" })
+        .Where("id = @id", new { id = 15, })
         .As("u1").Request();
 
-        var r2 = new Query("users").Update(new { deviceid = "@u1.deviceid" }).Where("id = @userid", new { userid = 7 }).Request();
+        var r2 = new Query("users").Update(new { deviceid = "@u1.deviceid" }).Where("id = @userid", new { userid = 0 }).Request();
 
         arr.Add(r1);
         arr.Add(r2);

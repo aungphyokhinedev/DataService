@@ -6,14 +6,14 @@ public class QuerySelect
 {
    
 
-    private string fields { get; set; }
-    private Query query { get; set; }
-    private string? orderBy { get; set; }
-    private string? groupBy { get; set; }
+    private string _fields { get; set; }
+    private Query _query { get; set; }
+    private string? _orderBy { get; set; }
+    private string? _groupBy { get; set; }
 
-    private int limit { get; set; } = 10;
+    private int _limit { get; set; }
 
-    private int page { get; set; } = 1;
+    private int _page { get; set; }
 
     private string _tag { get; set; }
 
@@ -36,33 +36,33 @@ public class QuerySelect
 
 
 
-    public QuerySelect(Query _query, string _fields = "*")
+    public QuerySelect(Query query, string fields = "*")
     {
-        fields = _fields;
-        query = _query;
+        _fields = fields;
+        _query = query;
     }
 
     public QuerySelect Order(string order)
     {
-        orderBy = order;
+        _orderBy = order;
         return this;
     }
 
     public QuerySelect Group(string group)
     {
-        groupBy = group;
+        _groupBy = group;
         return this;
     }
 
     public QuerySelect Page(int page)
     {
-        page = page;
+        _page = page;
         return this;
     }
 
     public QuerySelect Limit(int limit)
     {
-        limit = limit;
+        _limit = limit;
         return this;
     }
 
@@ -70,18 +70,18 @@ public class QuerySelect
     {
         return new GetRequest
         {
-            page = this.page,
-            pageSize = this.limit,
-            tables = this.query._tables,
-            fields = this.fields,
-            groupBy = this.groupBy,
-            orderBy = this.orderBy,
+            page = this._page,
+            pageSize = this._limit,
+            tables = this._query._tables,
+            fields = this._fields,
+            groupBy = this._groupBy,
+            orderBy = this._orderBy,
             filter = new Filter
             {
-                where = this._where,
-                parameters = this._parameters
+                where = _where,
+                parameters = _parameters
             },
-            tag = this._tag,
+            tag = _tag,
 
         };
     }

@@ -5,11 +5,13 @@ using AplusExtension;
 namespace DataService;
 public class PostgresDataContext : IDataContext
 {
-    IConfiguration _config;
+    private IConfiguration _config;
+    private PostgresFunction _func;
 
     public PostgresDataContext(IConfiguration cofig)
     {
         _config = cofig;
+        _func = new PostgresFunction();
     }
 
     public async Task<ListResponse> GetListAsync(SelectContext data)
@@ -19,7 +21,7 @@ public class PostgresDataContext : IDataContext
             try
             {
                 connection.Open();
-                return await PostgresFunction.getAsync(data, connection);
+                return await _func.getAsync(data, connection);
 
             }
             catch (Exception e)
@@ -45,7 +47,7 @@ public class PostgresDataContext : IDataContext
             try
             {
                 connection.Open();
-                return await PostgresFunction.insertAsync(data, connection);
+                return await _func.insertAsync(data, connection);
 
             }
             catch (Exception e)
@@ -71,7 +73,7 @@ public class PostgresDataContext : IDataContext
             try
             {
                 connection.Open();
-                return await PostgresFunction.setAsync(data, connection);
+                return await _func.setAsync(data, connection);
 
 
             }
@@ -94,7 +96,7 @@ public class PostgresDataContext : IDataContext
             try
             {
                 connection.Open();
-                return await PostgresFunction.deleteAsync(data, connection);
+                return await _func.deleteAsync(data, connection);
 
             }
             catch (Exception e)
@@ -124,7 +126,7 @@ public class PostgresDataContext : IDataContext
                 {
                     try
                     {
-                        var result = await PostgresFunction.runAsync(data, connection);
+                        var result = await _func.runAsync(data, connection);
                         transaction.Commit();
                         return result;
                     }
@@ -182,7 +184,7 @@ public class PostgresDataContext : IDataContext
                             {
                                 var select = (SelectContext)request;
                                 select.whereParams.setValues(responses);
-                                var result = await PostgresFunction.getAsync(select, connection, transaction);
+                                var result = await _func.getAsync(select, connection, transaction);
                                 if(select.tag.IsNotNullOrEmpty()) responses.Add(select.tag,result);
                             }
                             
@@ -191,7 +193,7 @@ public class PostgresDataContext : IDataContext
                                 var insert = (InsertContext)request;                         
                                 insert.data.setValues(responses);
              
-                                var result = await PostgresFunction.insertAsync(insert, connection, transaction);
+                                var result = await _func.insertAsync(insert, connection, transaction);
                                 if(insert.tag.IsNotNullOrEmpty()) responses.Add(insert.tag,result);
                             }
                             if (request.GetType() == typeof(UpdateContext))
@@ -200,14 +202,14 @@ public class PostgresDataContext : IDataContext
                                 update.data.setValues(responses);
                                 update.whereParams.setValues(responses);
                                
-                                var result = await PostgresFunction.setAsync(update, connection, transaction);
+                                var result = await _func.setAsync(update, connection, transaction);
                                 if(update.tag.IsNotNullOrEmpty()) responses.Add(update.tag,result);
                             }
                             if (request.GetType() == typeof(DeleteContext))
                             {
                                 var delete = (DeleteContext)request;
                                 delete.whereParams.setValues(responses);
-                                var result = await PostgresFunction.deleteAsync(delete, connection, transaction);
+                                var result = await _func.deleteAsync(delete, connection, transaction);
                                 if(delete.tag.IsNotNullOrEmpty()) responses.Add(delete.tag,result);
                             }
                           
