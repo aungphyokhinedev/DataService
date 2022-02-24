@@ -5,8 +5,3 @@ public interface DataServiceContract{
     string request{get;set;}
 }
 
-public class QueryContract : DataServiceContract
-{
-    public QueryTypes type { get;set; }
-    public string request { get;set; }
-}

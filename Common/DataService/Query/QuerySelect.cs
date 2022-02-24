@@ -86,7 +86,7 @@ public class QuerySelect
         };
     }
 
-    public DataServiceContract Contract(){
+    public QueryContract Contract(){
         return new QueryContract{
             type = QueryTypes.Listing,
             request = JsonConvert.SerializeObject(this.Request())

@@ -53,7 +53,7 @@ public class QueryUpdate
         }
     }
 
-    public DataServiceContract Contract(){
+    public QueryContract Contract(){
         return new QueryContract{
             type = QueryTypes.Update,
             request = JsonConvert.SerializeObject(this.Request())

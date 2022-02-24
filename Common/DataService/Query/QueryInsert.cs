@@ -30,7 +30,7 @@ public class QueryInsert
         };
     }
 
-    public DataServiceContract Contract(){
+    public QueryContract Contract(){
         return new QueryContract{
             type = QueryTypes.Create,
             request = JsonConvert.SerializeObject(this.Request())

@@ -57,7 +57,7 @@ public class QueryDelete
 
     }
 
-    public DataServiceContract Contract(){
+    public QueryContract Contract(){
         return new QueryContract{
             type = QueryTypes.Remove,
             request = JsonConvert.SerializeObject(this.Request())

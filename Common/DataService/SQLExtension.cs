@@ -48,5 +48,46 @@ public static partial class SQLExtensions
         }
     }
 
+    public static List<IDictionary<string,object>> Data(this MassTransit.Response<ListData> response)
+    {
+       return response.Message.response.rows;
+    }
+
+    public static int Code(this MassTransit.Response<ListData> response)
+    {
+       return response.Message.response.code;
+    }
+
+     public static string Message(this MassTransit.Response<ListData> response)
+    {
+       return response.Message.response.message;
+    }
+
+     public static ListResponse Response(this MassTransit.Response<ListData> response)
+    {
+       return response.Message.response;
+    }
+
+
+    public static List<IDictionary<string,object>> Data(this MassTransit.Response<ResultData> response)
+    {
+       return response.Message.response.rows;
+    }
+
+    public static int Code(this MassTransit.Response<ResultData> response)
+    {
+       return response.Message.response.code;
+    }
+
+     public static string Message(this MassTransit.Response<ResultData> response)
+    {
+       return response.Message.response.message;
+    }
+
+     public static Response Response(this MassTransit.Response<ResultData> response)
+    {
+       return response.Message.response;
+    }
+
 }
 
